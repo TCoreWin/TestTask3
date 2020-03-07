@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\thecorewin\.Rider2018.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\thecorewin\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_TestTask3.-1516280935.00" t="ExcludeRecursive" />
+    <e p="C:\Users\thecorewin\Documents\UnityProject\TestTask3" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Editor" t="Include">
+          <e p="PoolEditor.cs" t="Include" />
+          <e p="PoolManagerEditor.cs" t="Include" />
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="ObjectPoolManager" t="Include">
+            <e p="IPoolable.cs" t="Include" />
+            <e p="Pool.cs" t="Include" />
+            <e p="PoolManager.cs" t="Include" />
+            <e p="PoolType.cs" t="Include" />
+          </e>
+          <e p="Singleton" t="Include">
+            <e p="Singleton.cs" t="Include" />
+          </e>
+          <e p="UIContent.cs" t="Include" />
+          <e p="UIPanelContent.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Library" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Temp" t="ExcludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+      </e>
+      <e p="TestTask3.sln" t="IncludeFlat" />
+    </e>
+  </component>
+</project>
