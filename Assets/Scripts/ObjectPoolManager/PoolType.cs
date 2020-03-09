@@ -1,6 +1,9 @@
 ﻿public enum PoolType
 {
-    ScrollContent = 0,
-    Button,
-    TextPanel
+    Image = 0,
+    UIImage,
+    LevelIcon,
+    LevelUI,
+    ItemIcon,
+    ItemUI
 }

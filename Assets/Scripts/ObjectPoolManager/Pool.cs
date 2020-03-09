@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
-using UnityEngine.Experimental.UIElements;
 
 public class Pool : MonoBehaviour
 {
@@ -55,5 +53,6 @@ public class Pool : MonoBehaviour
         var poolable = go.GetComponent<IPoolable>();
         if(poolable != null) poolable.OnDespawn();
         if(parentPool != null) go.transform.SetParent(parentPool);
+        poolObjectsStack.Push(go);
     }
 }

@@ -12,15 +12,7 @@ public class UIContent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     [SerializeField] private PoolType uiPoolType;
     [SerializeField] private GameObject uiPrefab;
     
-    private Transform m_canvas;
-    private RectTransform m_canvas_rect;
     private GameObject viewDragPoolObj;
-    
-    private void Awake()
-    {
-        m_canvas = GameObject.Find("Canvas").transform;
-        m_canvas_rect = m_canvas.GetComponent<RectTransform>();
-    }
 
     private void Start()
     {
@@ -30,37 +22,47 @@ public class UIContent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
 
     public void OnDrag(PointerEventData eventData)
     {   
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(m_canvas_rect, eventData.position, eventData.enterEventCamera, out var pos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(UIPanelContent.Instance.MCanvasRect, eventData.position, eventData.enterEventCamera, out var pos);
         viewDragPoolObj.transform.localPosition = pos;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         viewDragPoolObj = PoolManager.Instance.Spawn(poolType, prefab);
-        viewDragPoolObj.transform.SetParent(m_canvas);
+        viewDragPoolObj.transform.SetParent(UIPanelContent.Instance.MCanvas);
         viewDragPoolObj.transform.localScale = Vector3.one;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         PoolManager.Instance.Despawn(poolType, viewDragPoolObj);
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(m_canvas_rect, eventData.position, eventData.enterEventCamera, out var pos);
-        
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(UIPanelContent.Instance.MCanvasRect, eventData.position, eventData.enterEventCamera, out var pos);
         bool onField = OnField(eventData.position, UIPanelContent.Instance.UIField, eventData.enterEventCamera);
         
         if (onField)
         {
             var uiGo = PoolManager.Instance.Spawn(uiPoolType, uiPrefab);
-            uiGo.transform.SetParent(m_canvas);
+            uiGo.transform.SetParent(UIPanelContent.Instance.MCanvas);
             uiGo.transform.localScale = Vector3.one;
             uiGo.transform.localPosition = pos;
+            
+            UIElemt scrips = uiGo.GetComponent<UIElemt>();
+            scrips.UpdatePosData();
+            scrips.Type = uiPoolType;
         }
     }
 
     bool OnField(Vector2 cursorPos, RectTransform field, Camera cam)
     {   
-        if (field.rect.Contains(field.worldToLocalMatrix.MultiplyPoint(cam.ScreenToWorldPoint(cursorPos)))
-        ) return true;
+        if (field.rect.Contains(field.worldToLocalMatrix.MultiplyPoint(cam.ScreenToWorldPoint(cursorPos))))
+            return true;
+        return false;
+    }
+
+    bool OverArea(RectTransform rectGo, out Vector2 spawnPosition)
+    {
+        spawnPosition = Vector2.one;
+        
         return false;
     }
 }

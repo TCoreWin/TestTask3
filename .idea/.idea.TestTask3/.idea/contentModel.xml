@@ -18,10 +18,17 @@
             <e p="PoolManager.cs" t="Include" />
             <e p="PoolType.cs" t="Include" />
           </e>
+          <e p="SelectedBox.cs" t="Include" />
           <e p="Singleton" t="Include">
             <e p="Singleton.cs" t="Include" />
           </e>
+          <e p="UI" t="Include">
+            <e p="Popup.cs" t="Include" />
+            <e p="PopupOpener.cs" t="Include" />
+            <e p="TextTimeClose.cs" t="Include" />
+          </e>
           <e p="UIContent.cs" t="Include" />
+          <e p="UIElemt.cs" t="Include" />
           <e p="UIPanelContent.cs" t="Include" />
         </e>
       </e>
