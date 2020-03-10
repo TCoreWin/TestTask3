@@ -6,11 +6,10 @@ using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler
+public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     private RectTransform uiField;
     private RectTransform m_canvas_rect;
-    private RectTransform groupMove;
     private Vector2 minUIFieldPpoint;
     private Vector2 maxUIFieldPpoint;
     private Transform m_canvas;
@@ -49,7 +48,6 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler
         uiField = GameObject.Find("UIField").GetComponent<RectTransform>();
 
         m_canvas = GameObject.Find("Canvas").transform;
-        groupMove = GameObject.Find("GroupMove").GetComponent<RectTransform>();
         m_canvas_rect = MCanvas.GetComponent<RectTransform>();
         selectedBox = FindObjectOfType<SelectedBox>();
         
@@ -85,20 +83,21 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler
 
     public void MoveSelectedObjects(UIElemt currentMoveElement)
     {   
-        if (CountSelectedElements() > 0)
+        if (uiElementList.Count == 0) return;
+        
+        for (int i = 0; i < uiElementList.Count; i++)
         {
-            for (int i = 0; i < uiElementList.Count; i++)
-            {
-                if(uiElementList[i] == currentMoveElement) continue;
+            if(uiElementList[i] == currentMoveElement) continue;
 
-                uiElementList[i].RectTransformUIElement.localPosition =
-                    currentMoveElement.RectTransformUIElement.localPosition - uiElementList[i].Offset;
-            }
+            uiElementList[i].RectTransformUIElement.localPosition =
+                currentMoveElement.RectTransformUIElement.localPosition - uiElementList[i].Offset;
         }
     }
 
     public void RecountOffset(UIElemt currentMoveElement)
     {
+        if(uiElementList.Count == 0) return;
+        
         for (int i = 0; i < uiElementList.Count; i++)
         {
             if(currentMoveElement == uiElementList[i]) continue;
@@ -109,6 +108,8 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler
 
     public void UpdatePosDataAllElements()
     {
+        if(uiElementList.Count == 0) return;
+        
         for (int i = 0; i < uiElementList.Count; i++)
         {
             uiElementList[i].UpdatePosData();
@@ -139,8 +140,40 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler
         uiElementOnField.Clear();
     }
     
+    private Vector2 MousePos(PointerEventData eventData)
+    {
+        Vector2 pos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(MCanvasRect, eventData.position,
+            eventData.enterEventCamera, out pos);
+        return pos;
+    }
+    
     public void OnPointerClick(PointerEventData eventData)
     {
-        ClearSelectedElements();
+        //ClearSelectedElements();
     }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        Vector2 startPos = MousePos(eventData);
+        SelectedBox.Instance.StartPos = startPos;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        Vector2 endPos = MousePos(eventData);
+        SelectedBox.Instance.EndPos = endPos;
+
+        uiElementList = SelectedBox.Instance.CheckContainsUIElements(uiElementOnField);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        Vector2 endPos = MousePos(eventData);
+        SelectedBox.Instance.EndPos = endPos;
+        
+        SelectedBox.Instance.DrawSelectedBox();
+    }
+    
+    
 }

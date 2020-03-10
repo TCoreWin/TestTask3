@@ -58,11 +58,4 @@ public class UIContent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
             return true;
         return false;
     }
-
-    bool OverArea(RectTransform rectGo, out Vector2 spawnPosition)
-    {
-        spawnPosition = Vector2.one;
-        
-        return false;
-    }
 }
