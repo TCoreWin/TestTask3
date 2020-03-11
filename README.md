@@ -14,4 +14,4 @@
 ## Реализация
 > Готово на ~80%
 
-![](https://imgur.com/D0aiXq2.gif)# TestTask3
+![](https://imgur.com/D0aiXq2.gif)
