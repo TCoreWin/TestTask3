@@ -5,8 +5,9 @@ using System.Security.Cryptography;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Experimental.PlayerLoop;
 
-public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class UIPanelContent : Singleton<UIPanelContent>, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     private RectTransform uiField;
     private RectTransform m_canvas_rect;
@@ -15,7 +16,7 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler, I
     private Transform m_canvas;
     private SelectedBox selectedBox;
     
-    [SerializeField] List<UIElemt> uiElementList = new List<UIElemt>();
+    [SerializeField] List<UIElemt> uiSelectedElementList = new List<UIElemt>();
     [SerializeField] List<UIElemt> uiElementOnField = new List<UIElemt>();
     
     public RectTransform UIField
@@ -54,6 +55,22 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler, I
         InitUIFieldMinMaxPoint();
     }
 
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Delete))
+        {
+            for (int i = 0; i < uiSelectedElementList.Count; i++)
+            {
+                if (uiElementOnField.Contains(uiSelectedElementList[i]))
+                {
+                    DeleteSpawnElement(uiSelectedElementList[i]);
+                }
+            }
+            
+            uiSelectedElementList.Clear();
+        }
+    }
+
     private void InitUIFieldMinMaxPoint()
     {
         Vector2 offset = new Vector2(uiField.rect.width * .5f, uiField.rect.height * .5f);
@@ -65,9 +82,9 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler, I
 
     public void AddSelectedElement(UIElemt element)
     {
-        if(uiElementList.Contains(element)) return;
+        if(uiSelectedElementList.Contains(element)) return;
 
-        uiElementList.Add(element);
+        uiSelectedElementList.Add(element);
     }
 
     public void AddSpawnElement(UIElemt element)
@@ -83,53 +100,50 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler, I
 
     public void MoveSelectedObjects(UIElemt currentMoveElement)
     {   
-        if (uiElementList.Count == 0) return;
-        
-        for (int i = 0; i < uiElementList.Count; i++)
+        for (int i = 0; i < uiSelectedElementList.Count; i++)
         {
-            if(uiElementList[i] == currentMoveElement) continue;
+            if(uiSelectedElementList[i] == currentMoveElement) continue;
 
-            uiElementList[i].RectTransformUIElement.localPosition =
-                currentMoveElement.RectTransformUIElement.localPosition - uiElementList[i].Offset;
+            uiSelectedElementList[i].RectTransformUIElement.localPosition =
+                currentMoveElement.RectTransformUIElement.localPosition - uiSelectedElementList[i].Offset;
         }
     }
 
     public void RecountOffset(UIElemt currentMoveElement)
     {
-        if(uiElementList.Count == 0) return;
-        
-        for (int i = 0; i < uiElementList.Count; i++)
+        for (int i = 0; i < uiSelectedElementList.Count; i++)
         {
-            if(currentMoveElement == uiElementList[i]) continue;
+            if(currentMoveElement == uiSelectedElementList[i]) continue;
 
-            uiElementList[i].Offset = currentMoveElement.RectTransformUIElement.localPosition - uiElementList[i].RectTransformUIElement.localPosition;
+            uiSelectedElementList[i].Offset = currentMoveElement.RectTransformUIElement.localPosition - uiSelectedElementList[i].RectTransformUIElement.localPosition;
         }
     }
 
     public void UpdatePosDataAllElements()
     {
-        if(uiElementList.Count == 0) return;
-        
-        for (int i = 0; i < uiElementList.Count; i++)
+        for (int i = 0; i < uiSelectedElementList.Count; i++)
         {
-            uiElementList[i].UpdatePosData();
+            uiSelectedElementList[i].UpdatePosData();
         }
     }
     
     public int CountSelectedElements()
     {
-        return uiElementList.Count;
+        return uiSelectedElementList.Count;
     }
 
     private void ClearSelectedElements()
     {
-        uiElementList.Clear();
+        for (int i = 0; i < uiSelectedElementList.Count; i++)
+        {
+            uiSelectedElementList[i].SetSelect(false);
+        }
+        
+        uiSelectedElementList.Clear();
     }
 
-    public void CleatField()
+    public void ClearField()
     {
-        if(uiElementOnField.Count == 0) return;
-
         int count = uiElementOnField.Count;
         
         for (int i = 0; i < count; i++)
@@ -148,11 +162,20 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler, I
         return pos;
     }
     
-    public void OnPointerClick(PointerEventData eventData)
+    void FillingUIElementList()
     {
-        //ClearSelectedElements();
-    }
+        List<UIElemt> allSelectedElements = SelectedBox.Instance.CheckContainsUIElements(uiElementOnField);
 
+        for (int i = 0; i < allSelectedElements.Count; i++)
+        {
+            if (!uiSelectedElementList.Contains(allSelectedElements[i]))
+            {
+                uiSelectedElementList.Add(allSelectedElements[i]);
+                allSelectedElements[i].SetSelect(true);
+            }
+        }
+    }
+    
     public void OnBeginDrag(PointerEventData eventData)
     {
         Vector2 startPos = MousePos(eventData);
@@ -164,9 +187,9 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler, I
         Vector2 endPos = MousePos(eventData);
         SelectedBox.Instance.EndPos = endPos;
 
-        uiElementList = SelectedBox.Instance.CheckContainsUIElements(uiElementOnField);
+        FillingUIElementList();
     }
-
+    
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 endPos = MousePos(eventData);
@@ -174,6 +197,11 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerClickHandler, I
         
         SelectedBox.Instance.DrawSelectedBox();
     }
-    
-    
+
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (!Input.GetKey(KeyCode.LeftShift))
+            ClearSelectedElements();
+    }
 }

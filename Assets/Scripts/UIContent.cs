@@ -14,10 +14,15 @@ public class UIContent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     
     private GameObject viewDragPoolObj;
 
+    public PoolType UiPoolType
+    {
+        get { return uiPoolType; }
+    }
+
     private void Start()
     {
         PoolManager.Instance.AddPool(poolType).Populate(prefab, 1);
-        PoolManager.Instance.AddPool(uiPoolType).Populate(uiPrefab, 10);
+        PoolManager.Instance.AddPool(UiPoolType).Populate(uiPrefab, 10);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -41,14 +46,14 @@ public class UIContent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         
         if (onField)
         {
-            var uiGo = PoolManager.Instance.Spawn(uiPoolType, uiPrefab);
+            var uiGo = PoolManager.Instance.Spawn(UiPoolType, uiPrefab);
             uiGo.transform.SetParent(UIPanelContent.Instance.MCanvas);
             uiGo.transform.localScale = Vector3.one;
             uiGo.transform.localPosition = pos;
             
             UIElemt scrips = uiGo.GetComponent<UIElemt>();
             scrips.UpdatePosData();
-            scrips.Type = uiPoolType;
+            scrips.Type = UiPoolType;
         }
     }
 

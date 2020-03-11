@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class UIElemt : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IPoolable
@@ -9,6 +10,7 @@ public class UIElemt : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
     private PoolType type;
     
     private RectTransform rectTransform;
+    private Image selectImage;
     
     private Vector2 minPoint;
     private Vector2 maxPoint;
@@ -34,6 +36,12 @@ public class UIElemt : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        selectImage = GetComponent<Image>();
+    }
+
+    private void Start()
+    {
+        selectImage.color = new Color(selectImage.color.r,selectImage.color.g,selectImage.color.b,0);
     }
 
     public void UpdatePosData()
@@ -129,6 +137,12 @@ public class UIElemt : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
     public void OnDespawn()
     {
-        
+        selectImage.color = new Color(selectImage.color.r,selectImage.color.g,selectImage.color.b,0);
+    }
+
+    public void SetSelect(bool value)
+    {
+        if(value) selectImage.color = new Color(selectImage.color.r,selectImage.color.g,selectImage.color.b,1);
+        else selectImage.color = new Color(selectImage.color.r,selectImage.color.g,selectImage.color.b,0);
     }
 }

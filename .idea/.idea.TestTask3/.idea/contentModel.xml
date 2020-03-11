@@ -18,6 +18,10 @@
             <e p="PoolManager.cs" t="Include" />
             <e p="PoolType.cs" t="Include" />
           </e>
+          <e p="SaveLoadSystem" t="Include">
+            <e p="SaveData.cs" t="Include" />
+            <e p="SaveLoadSystem.cs" t="Include" />
+          </e>
           <e p="SelectedBox.cs" t="Include" />
           <e p="Singleton" t="Include">
             <e p="Singleton.cs" t="Include" />

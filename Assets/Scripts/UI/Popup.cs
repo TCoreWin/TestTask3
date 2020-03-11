@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Popup : MonoBehaviour
 {
-    public Color backgroundColor = new Color(10.0f / 255.0f, 10.0f / 255.0f, 10.0f / 255.0f, 0.6f);
+    public Color backgroundColor = new Color(10.0f / 255.0f, 10.0f / 255.0f, 10.0f / 255.0f, 0.9f);
 
     private GameObject m_background;
 
@@ -25,7 +25,7 @@ public class Popup : MonoBehaviour
 
     private IEnumerator RunPopupDestroy()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         Destroy(m_background);
         Destroy(gameObject);
     }
