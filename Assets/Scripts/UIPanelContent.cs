@@ -1,11 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Security.Cryptography;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Experimental.PlayerLoop;
 
 public class UIPanelContent : Singleton<UIPanelContent>, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -44,6 +40,11 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerDownHandler, IB
         get { return m_canvas_rect; }
     }
 
+    public List<UIElemt> UiElementOnField
+    {
+        get { return uiElementOnField; }
+    }
+
     private void Awake()
     {
         uiField = GameObject.Find("UIField").GetComponent<RectTransform>();
@@ -61,7 +62,7 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerDownHandler, IB
         {
             for (int i = 0; i < uiSelectedElementList.Count; i++)
             {
-                if (uiElementOnField.Contains(uiSelectedElementList[i]))
+                if (UiElementOnField.Contains(uiSelectedElementList[i]))
                 {
                     DeleteSpawnElement(uiSelectedElementList[i]);
                 }
@@ -89,13 +90,13 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerDownHandler, IB
 
     public void AddSpawnElement(UIElemt element)
     {
-        uiElementOnField.Add(element);
+        UiElementOnField.Add(element);
     }
     
     public void DeleteSpawnElement(UIElemt element)
     {
         element.Despawn();
-        uiElementOnField.Remove(element);
+        UiElementOnField.Remove(element);
     }
 
     public void MoveSelectedObjects(UIElemt currentMoveElement)
@@ -144,14 +145,14 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerDownHandler, IB
 
     public void ClearField()
     {
-        int count = uiElementOnField.Count;
+        int count = UiElementOnField.Count;
         
         for (int i = 0; i < count; i++)
         {
-            uiElementOnField[i].Despawn();
+            UiElementOnField[i].Despawn();
         }
         
-        uiElementOnField.Clear();
+        UiElementOnField.Clear();
     }
     
     private Vector2 MousePos(PointerEventData eventData)
@@ -164,7 +165,7 @@ public class UIPanelContent : Singleton<UIPanelContent>, IPointerDownHandler, IB
     
     void FillingUIElementList()
     {
-        List<UIElemt> allSelectedElements = SelectedBox.Instance.CheckContainsUIElements(uiElementOnField);
+        List<UIElemt> allSelectedElements = SelectedBox.Instance.CheckContainsUIElements(UiElementOnField);
 
         for (int i = 0; i < allSelectedElements.Count; i++)
         {

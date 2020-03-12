@@ -1,6 +1,6 @@
 ﻿[System.Serializable]
 public class SaveData
 {
-    private int[] type;
-    private float[] position;
+    public int[] type;
+    public float[] position;
 }

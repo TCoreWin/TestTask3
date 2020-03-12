@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class UIContent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
@@ -25,6 +22,14 @@ public class UIContent : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
         PoolManager.Instance.AddPool(UiPoolType).Populate(uiPrefab, 10);
     }
 
+    public void SpawnUIElements(Vector3 position)
+    {   
+        var uiGo = PoolManager.Instance.Spawn(uiPoolType, uiPrefab);
+        uiGo.transform.SetParent(UIPanelContent.Instance.MCanvas);
+        uiGo.transform.localScale = Vector3.one;
+        uiGo.transform.localPosition = position;
+    }
+    
     public void OnDrag(PointerEventData eventData)
     {   
         RectTransformUtility.ScreenPointToLocalPointInRectangle(UIPanelContent.Instance.MCanvasRect, eventData.position, eventData.enterEventCamera, out var pos);

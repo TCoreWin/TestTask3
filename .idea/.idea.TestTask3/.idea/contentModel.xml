@@ -4,13 +4,8 @@
     <e p="C:\Users\thecorewin\.Rider2018.3\system\extResources" t="IncludeRecursive" />
     <e p="C:\Users\thecorewin\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_TestTask3.-1516280935.00" t="ExcludeRecursive" />
     <e p="C:\Users\thecorewin\Documents\UnityProject\TestTask3" t="IncludeRecursive">
-      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
-        <e p="Editor" t="Include">
-          <e p="PoolEditor.cs" t="Include" />
-          <e p="PoolManagerEditor.cs" t="Include" />
-        </e>
         <e p="Scripts" t="Include">
           <e p="ObjectPoolManager" t="Include">
             <e p="IPoolable.cs" t="Include" />
@@ -20,6 +15,7 @@
           </e>
           <e p="SaveLoadSystem" t="Include">
             <e p="SaveData.cs" t="Include" />
+            <e p="SaveList.cs" t="Include" />
             <e p="SaveLoadSystem.cs" t="Include" />
           </e>
           <e p="SelectedBox.cs" t="Include" />
@@ -27,9 +23,14 @@
             <e p="Singleton.cs" t="Include" />
           </e>
           <e p="UI" t="Include">
+            <e p="LoadUI" t="Include">
+              <e p="LoadPanel.cs" t="Include" />
+              <e p="LoadPanelElement.cs" t="Include" />
+            </e>
             <e p="Popup.cs" t="Include" />
             <e p="PopupOpener.cs" t="Include" />
             <e p="TextTimeClose.cs" t="Include" />
+            <e p="WindowScaler.cs" t="Include" />
           </e>
           <e p="UIContent.cs" t="Include" />
           <e p="UIElemt.cs" t="Include" />
